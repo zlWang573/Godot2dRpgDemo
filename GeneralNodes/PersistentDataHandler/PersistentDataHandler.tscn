@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bimbldtnwpl8j"]
+
+[ext_resource type="Script" path="res://GeneralNodes/PersistentDataHandler/PersistentDataHandler.cs" id="1_hhbj7"]
+
+[node name="PersistentDataHandler" type="Node"]
+script = ExtResource("1_hhbj7")

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://djdnaidxu2b0y"]
+
+[ext_resource type="Texture2D" uid="uid://dpqso7wimaeo2" path="res://Items/Sprites/items.png" id="1_8cxvb"]
+[ext_resource type="AudioStream" uid="uid://cixjfa2id00ko" path="res://Items/ItemEffects/hp-up.wav" id="1_y8h0q"]
+[ext_resource type="Script" path="res://Items/Scripts/ItemData.cs" id="1_yi7gx"]
+[ext_resource type="Script" path="res://Items/ItemEffects/ItemEffectHeal.cs" id="2_0m3mo"]
+
+[sub_resource type="Resource" id="Resource_tkmwc"]
+script = ExtResource("2_0m3mo")
+HealAmount = 2
+AudioStream = ExtResource("1_y8h0q")
+UseDescription = ""
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0wqk"]
+atlas = ExtResource("1_8cxvb")
+region = Rect2(32, 0, 32, 32)
+
+[resource]
+script = ExtResource("1_yi7gx")
+Name = "Potion"
+Description = "This red drink restores your health!"
+Texture = SubResource("AtlasTexture_n0wqk")
+Effects = [SubResource("Resource_tkmwc")]
