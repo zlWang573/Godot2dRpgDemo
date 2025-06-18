@@ -71,6 +71,10 @@ public partial class NPCPatrolBehavior : NPCBehavior
                     var p = PatrolLocations[i];
                     p.UpdateLabel(i.ToString());
                     p.Modulate = COLORS[i % COLORS.Count];
+                    if (!p.IsConnected(PatrolLocation.SignalName.TransformChanged, Callable.From(GatherPatrolLocations)))
+                    {
+                        p.Connect(PatrolLocation.SignalName.TransformChanged, Callable.From(GatherPatrolLocations));
+                    }
 
                     int next = (i + 1) % PatrolLocations.Count;
                     p.UpdateLine(PatrolLocations[next].GlobalPosition);

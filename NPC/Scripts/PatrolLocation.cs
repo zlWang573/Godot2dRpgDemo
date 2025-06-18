@@ -5,6 +5,9 @@ using System;
 [Tool]
 public partial class PatrolLocation : Node2D
 {
+    [Signal]
+    public delegate void TransformChangedEventHandler();
+
     [Export]
     public float WaitTime { get => waitTime; set => UpdateWaitTime(value); }
 
@@ -16,6 +19,24 @@ public partial class PatrolLocation : Node2D
     public Line2D Line;
 
     private float waitTime = 0f;
+    private Transform2D lastTransform;
+
+    public override void _EnterTree()
+    {
+        SetNotifyTransform(true);
+    }
+
+    public override void _Notification(int what)
+    {
+        if (what == NotificationTransformChanged)
+        {
+            if (lastTransform.Origin.DistanceTo(Transform.Origin) > 0.001f)
+            {
+                lastTransform = Transform;
+                EmitSignal(SignalName.TransformChanged);
+            }
+        }
+    }
 
     public override void _Ready()
     {

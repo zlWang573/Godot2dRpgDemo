@@ -62,5 +62,5 @@ WaitTime = 1.0
 
 [node name="PatrolLocation4" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(0, 1, 1, 1)
-position = Vector2(-16, -82)
+position = Vector2(-46, -74)
 WaitTime = 2.0
