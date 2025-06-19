@@ -24,6 +24,7 @@ PlayerManager="*res://00_Globals/GlobalPlayerManager.cs"
 SceneTransition="*res://GUI/SceneTransition/SceneTransition.tscn"
 SaveManager="*res://00_Globals/GlobalSaveManager.cs"
 PauseMenu="*res://GUI/PauseMenu/PauseMenu.tscn"
+DialogSystem="*res://GUI/DialogSystem/DialogSystem.tscn"
 
 [display]
 
@@ -37,10 +38,9 @@ window/stretch/mode="viewport"
 
 project/assembly_name="demo"
 
-[editor]
+[gui]
 
-version_control/plugin_name="GitPlugin"
-version_control/autoload_on_startup=true
+theme/custom_font="res://GUI/Fonts/Abaddon Light.ttf"
 
 [input]
 
@@ -108,6 +108,11 @@ ability={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":88,"key_label":0,"unicode":120,"location":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":3,"pressure":0.0,"pressed":false,"script":null)
+]
+}
+test={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":80,"key_label":0,"unicode":112,"location":0,"echo":false,"script":null)
 ]
 }
 
