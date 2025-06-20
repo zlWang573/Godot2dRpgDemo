@@ -15,5 +15,5 @@ public partial class NPCResource : Resource
     public Texture2D Portrait;
 
     [Export]
-    public string DialogAudioPitch;
+    public float DialogAudioPitch = 1.0f;
 }

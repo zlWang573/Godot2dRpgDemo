@@ -9,18 +9,28 @@ public partial class DialogSystemNode : CanvasLayer
 	[Signal]
 	public delegate void FinishedEventHandler();
 
+	[Signal]
+	public delegate void LetterAddedEventHandler(string letter);
+
 	public static DialogSystemNode Instance;
 
     private bool isActive = false;
 	private Array<DialogItem> dialogItems;
 	private int dialogIndex = 0;
 
+	private bool textInProgress = false;
+	private float textSpeed = 0.02f;
+	private int textLength = 0;
+	private string plainText;
+
 	private Control dialogUI;
 	private RichTextLabel content;
 	private Label nameLabel;
-	private Sprite2D portraitSprite;
+	private DialogProtrait portraitSprite;
 	private PanelContainer dialogProgressIndicator;
 	private Label dialogProgressIndicatorLabel;
+	private Timer timer;
+	private AudioStreamPlayer audioStreamPlayer;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -29,9 +39,11 @@ public partial class DialogSystemNode : CanvasLayer
         dialogUI = GetNode<Control>("DialogUI");
         content = GetNode<RichTextLabel>("DialogUI/PanelContainer/RichTextLabel");
         nameLabel = GetNode<Label>("DialogUI/NameLabel");
-        portraitSprite = GetNode<Sprite2D>("DialogUI/PortraitSprite");
+        portraitSprite = GetNode<DialogProtrait>("DialogUI/PortraitSprite");
         dialogProgressIndicator = GetNode<PanelContainer>("DialogUI/DialogProgressIndicator");
         dialogProgressIndicatorLabel = GetNode<Label>("DialogUI/DialogProgressIndicator/Label");
+        timer = GetNode<Timer>("DialogUI/Timer");
+        audioStreamPlayer = GetNode<AudioStreamPlayer>("DialogUI/AudioStreamPlayer");
 
         if (Engine.IsEditorHint())
 		{
@@ -44,6 +56,7 @@ public partial class DialogSystemNode : CanvasLayer
 			return;
 		}
 
+		timer.Timeout += OnTimerTimeout;
 		HideDialog();
 	}
 
@@ -61,6 +74,15 @@ public partial class DialogSystemNode : CanvasLayer
 
 		if (@event.IsActionPressed("interact") || @event.IsActionPressed("attack") || @event.IsActionPressed("ui_accept"))
 		{
+			if (textInProgress)
+			{
+				content.VisibleCharacters = textLength;
+				timer.Stop();
+				textInProgress = false;
+				ShowDialogButtonIndicator(true);
+                return;
+			}
+
 			dialogIndex += 1;
 			if (dialogIndex < dialogItems.Count)
 			{
@@ -76,7 +98,6 @@ public partial class DialogSystemNode : CanvasLayer
 	public async void ShowDialog(Array<DialogItem> items)
 	{
 		isActive = true;
-		dialogUI.Visible = true;
 		dialogUI.ProcessMode = Node.ProcessModeEnum.Always;
 		dialogItems = items;
 		dialogIndex = 0;
@@ -84,7 +105,8 @@ public partial class DialogSystemNode : CanvasLayer
 		GetTree().Paused = true;
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-		StartDialog();
+        dialogUI.Visible = true;
+        StartDialog();
     }
 
     public void HideDialog() 
@@ -99,9 +121,29 @@ public partial class DialogSystemNode : CanvasLayer
 
 	public void StartDialog()
 	{
-		ShowDialogButtonIndicator(true);
+		ShowDialogButtonIndicator(false);
 		var dialogItem = dialogItems[dialogIndex];
 		SetDialogData(dialogItem);
+
+		content.VisibleCharacters = 0;
+		textLength = content.GetTotalCharacterCount();
+		plainText = content.GetParsedText();
+		textInProgress = true;
+		StartTimer();
+	}
+
+	public void OnTimerTimeout()
+	{
+		content.VisibleCharacters += 1;
+		if (content.VisibleCharacters > textLength)
+		{
+            ShowDialogButtonIndicator(true);
+			textInProgress = false;
+			return;
+        }
+
+		EmitSignal(SignalName.LetterAdded, plainText[content.VisibleCharacters - 1].ToString());
+		StartTimer();
 	}
 
 	public void SetDialogData(DialogItem dialogItem)
@@ -112,6 +154,7 @@ public partial class DialogSystemNode : CanvasLayer
         }
 
 		portraitSprite.Texture = dialogItem.NpcInfo.Portrait;
+		portraitSprite.audioPitchBase = dialogItem.NpcInfo.DialogAudioPitch;
 		nameLabel.Text = dialogItem.NpcInfo.NPCName;
     }
 
@@ -127,4 +170,11 @@ public partial class DialogSystemNode : CanvasLayer
 			dialogProgressIndicatorLabel.Text = "END";
         }
 	}
+
+	public void StartTimer()
+	{
+		timer.WaitTime = textSpeed;
+		// manipulate wait time
+		timer.Start();
+    }
 }

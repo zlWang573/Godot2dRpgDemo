@@ -8,5 +8,5 @@ using System;
 public partial class DialogChoice : DialogItem
 {
 	[Export]
-	public Array<String> Choices = new Array<String>() { "Yes", "No" };
+	public Array<string> Choices = new Array<string>() { "Yes", "No" };
 }
