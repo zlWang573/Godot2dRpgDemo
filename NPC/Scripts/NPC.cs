@@ -32,6 +32,7 @@ public partial class NPC : CharacterBody2D
             return;
         }
 
+        GatherInteractables();
         EmitDoBehaviorSignal();
     }
 
@@ -39,6 +40,35 @@ public partial class NPC : CharacterBody2D
     {
         float fd = (float)delta;
         MoveAndSlide();
+    }
+
+    public void GatherInteractables()
+    {
+        foreach (var c in GetChildren())
+        {
+            if (c is DialogInteraction d)
+            {
+                d.PlayerInteracted += OnPlayerInteracted;
+                d.Finished += OnInteractionFinished;
+            }
+        }
+    }
+
+    public void OnPlayerInteracted()
+    {
+        UpdateDirection(GlobalPlayerManager.Instance.player.GlobalPosition);
+        State = "idle";
+        Velocity = Vector2.Zero;
+        UpdateAnimation();
+        DoBehavior = false;
+    }
+
+    public void OnInteractionFinished()
+    {
+        State = "idle";
+        UpdateAnimation();
+        DoBehavior = true;
+        EmitDoBehaviorSignal();
     }
 
     public void EmitDoBehaviorSignal()

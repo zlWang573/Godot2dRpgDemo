@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="NPCResource" load_steps=4 format=3 uid="uid://cpb7uealfoong"]
+[gd_resource type="Resource" script_class="NPCResource" load_steps=4 format=3 uid="uid://b0vori82xhjll"]
 
-[ext_resource type="Texture2D" uid="uid://n601x5n7qt51" path="res://NPC/Sprites/Portraits/npc_portrait_01.png" id="1_8yqi1"]
-[ext_resource type="Script" path="res://NPC/Scripts/NPCResource.cs" id="1_co5mx"]
-[ext_resource type="Texture2D" uid="uid://cfah45yjpui4a" path="res://NPC/Sprites/npc_sprite.png" id="2_crgpf"]
+[ext_resource type="Texture2D" uid="uid://n601x5n7qt51" path="res://NPC/Sprites/Portraits/npc_portrait_01.png" id="1_xllaa"]
+[ext_resource type="Texture2D" uid="uid://cfah45yjpui4a" path="res://NPC/Sprites/npc_sprite.png" id="2_027ci"]
+[ext_resource type="Script" path="res://NPC/Scripts/NPCResource.cs" id="3_r46ha"]
 
 [resource]
-script = ExtResource("1_co5mx")
+script = ExtResource("3_r46ha")
 NPCName = "Oren"
-Sprite = ExtResource("2_crgpf")
-Portrait = ExtResource("1_8yqi1")
+Sprite = ExtResource("2_027ci")
+Portrait = ExtResource("1_xllaa")
 DialogAudioPitch = ""

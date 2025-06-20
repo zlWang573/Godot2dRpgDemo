@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bne7yf2n77d0n"]
+[gd_scene load_steps=15 format=4 uid="uid://bne7yf2n77d0n"]
 
 [ext_resource type="Script" path="res://Levels/Scripts/Level.cs" id="1_ku76w"]
 [ext_resource type="PackedScene" uid="uid://cm83mofktrboo" path="res://TileMaps/grass-01.tscn" id="2_kb8pi"]
@@ -7,10 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://crwbh0nvsk2mb" path="res://Levels/LevelTransition.tscn" id="6_4a0ky"]
 [ext_resource type="PackedScene" uid="uid://dny3hjtxtvc2p" path="res://NPC/NPC.tscn" id="6_ka058"]
 [ext_resource type="PackedScene" uid="uid://blg8dbcjngyl7" path="res://NPC/NPCWanderBehavior.tscn" id="7_50bas"]
-[ext_resource type="Resource" uid="uid://cpb7uealfoong" path="res://NPC/00_NPCs/NPC01.tres" id="7_i63jx"]
+[ext_resource type="Resource" uid="uid://cpb7uealfoong" path="res://NPC/00_NPCs/00Hero.tres" id="7_i63jx"]
+[ext_resource type="PackedScene" uid="uid://prlk8iwh0grv" path="res://Interactables/Dialog/DialogInteraction.tscn" id="9_5fuf8"]
 [ext_resource type="Resource" uid="uid://hao6xm1c8lxa" path="res://NPC/00_NPCs/NPC02.tres" id="9_acy02"]
+[ext_resource type="Script" path="res://Interactables/Dialog/Scripts/DialogText.cs" id="10_0swxx"]
 [ext_resource type="PackedScene" uid="uid://b1shwqdolethw" path="res://NPC/NPCPatrolBehavior.tscn" id="10_u0tpn"]
 [ext_resource type="PackedScene" uid="uid://dxuka5lwxtw7k" path="res://NPC/PatrolLocation.tscn" id="11_ryh0q"]
+[ext_resource type="Resource" uid="uid://b0vori82xhjll" path="res://NPC/00_NPCs/NPC01.tres" id="11_y83mr"]
 
 [node name="02" type="Node2D"]
 y_sort_enabled = true
@@ -35,9 +38,26 @@ Side = 2
 
 [node name="NPC" parent="." instance=ExtResource("6_ka058")]
 position = Vector2(157, 133)
-NPCResource = ExtResource("7_i63jx")
+NPCResource = ExtResource("11_y83mr")
 
 [node name="NpcBehaviorWander" parent="NPC" instance=ExtResource("7_50bas")]
+
+[node name="DialogInteraction" parent="NPC" instance=ExtResource("9_5fuf8")]
+
+[node name="DialogText" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("10_0swxx")
+Text = "Hi [b]Hero[/b], is that you?"
+
+[node name="DialogText2" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("10_0swxx")
+Text = "
+[wave]Heck yeah, it's me.[/wave]"
+NpcInfo = ExtResource("7_i63jx")
+
+[node name="DialogText3" type="Node" parent="NPC/DialogInteraction"]
+script = ExtResource("10_0swxx")
+Text = "Nice bro!
+Happy to have a hero."
 
 [node name="NPC2" parent="." instance=ExtResource("6_ka058")]
 position = Vector2(344, 158)
@@ -47,20 +67,37 @@ NPCResource = ExtResource("9_acy02")
 
 [node name="PatrolLocation2" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(1, 0, 0, 1)
-position = Vector2(-43, 6)
+position = Vector2(-54, 37)
 WaitTime = 0.0
 
 [node name="PatrolLocation3" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(1, 1, 0, 1)
-position = Vector2(56, -58)
+position = Vector2(57, -25)
 WaitTime = 2.0
 
 [node name="PatrolLocation" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(0, 1, 0, 1)
-position = Vector2(69, 2)
+position = Vector2(70, 30)
 WaitTime = 1.0
 
 [node name="PatrolLocation4" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(0, 1, 1, 1)
-position = Vector2(-52, -68)
+position = Vector2(-57, -18)
 WaitTime = 2.0
+
+[node name="DialogInteraction2" parent="NPC2" instance=ExtResource("9_5fuf8")]
+
+[node name="DialogText" type="Node" parent="NPC2/DialogInteraction2"]
+script = ExtResource("10_0swxx")
+Text = "Hi [b]Hero[/b], is that you?"
+
+[node name="DialogText2" type="Node" parent="NPC2/DialogInteraction2"]
+script = ExtResource("10_0swxx")
+Text = "
+[wave]Heck yeah, it's me.[/wave]"
+NpcInfo = ExtResource("7_i63jx")
+
+[node name="DialogText3" type="Node" parent="NPC2/DialogInteraction2"]
+script = ExtResource("10_0swxx")
+Text = "Nice bro!
+Happy to have a hero."

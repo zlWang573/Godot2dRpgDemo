@@ -90,7 +90,7 @@ public partial class NPCPatrolBehavior : NPCBehavior
             return;
         }
 
-        this.NPC.GlobalPosition =  Target.TargetPosition;
+        this.NPC.GlobalPosition = Target.TargetPosition;
 
         this.NPC.State = "idle";
         this.NPC.Velocity = Vector2.Zero;

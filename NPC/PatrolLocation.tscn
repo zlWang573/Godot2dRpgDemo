@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxuka5lwxtw7k"]
+[gd_scene load_steps=5 format=3 uid="uid://dxuka5lwxtw7k"]
 
 [ext_resource type="Script" path="res://NPC/Scripts/PatrolLocation.cs" id="1_3m3wb"]
+[ext_resource type="FontFile" uid="uid://bewapser6763q" path="res://GUI/Fonts/m5x7.ttf" id="2_3jxn0"]
 
 [sub_resource type="Gradient" id="Gradient_0g76n"]
 offsets = PackedFloat32Array(0.636364, 0.935065, 1)
@@ -43,7 +44,6 @@ grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 12
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -63,7 +63,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 1
-theme_override_font_sizes/font_size = 8
+theme_override_fonts/font = ExtResource("2_3jxn0")
 text = "wait: 0.3s"
 horizontal_alignment = 1
 vertical_alignment = 1

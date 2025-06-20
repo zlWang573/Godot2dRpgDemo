@@ -11,8 +11,8 @@ public partial class Level : Node2D
 		this.YSortEnabled = true;
 		GlobalPlayerManager.Instance.SetAsParent(this);
 		GlobalLevelManager.Instance.LevelLoadStarted += FreeLevel;
-		GlobalAudioManager.Instance.PlayMusic(Music);
-	}
+        GlobalAudioManager.Instance.PlayMusic(Music);
+    }
 
 	public void FreeLevel()
 	{

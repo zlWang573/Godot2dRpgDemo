@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://bcvv3fpohl0x5"]
 
+[ext_resource type="Texture2D" uid="uid://dpqso7wimaeo2" path="res://Items/Sprites/items.png" id="1_3muxe"]
 [ext_resource type="Script" path="res://Items/Scripts/ItemData.cs" id="1_mu3sg"]
-[ext_resource type="Texture2D" uid="uid://dpqso7wimaeo2" path="res://Items/Sprites/items.png" id="1_s6n3e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mmnft"]
-atlas = ExtResource("1_s6n3e")
+atlas = ExtResource("1_3muxe")
 region = Rect2(0, 0, 32, 32)
 
 [resource]

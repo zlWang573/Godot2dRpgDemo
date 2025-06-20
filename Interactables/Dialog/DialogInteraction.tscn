@@ -1,0 +1,146 @@
+[gd_scene load_steps=9 format=3 uid="uid://prlk8iwh0grv"]
+
+[ext_resource type="Texture2D" uid="uid://csw83n58pj3rj" path="res://Interactables/Dialog/Sprites/dialog_interactable.png" id="1_dbdrv"]
+[ext_resource type="Script" path="res://Interactables/Dialog/Scripts/DialogInteraction.cs" id="1_lsoij"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cn1ma"]
+size = Vector2(44, 32)
+
+[sub_resource type="Animation" id="Animation_dyad5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, -52)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_51dyt"]
+resource_name = "default"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, -52)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xeral"]
+resource_name = "hide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, -55), Vector2(1, -52)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_iw3rb"]
+resource_name = "show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, -52), Vector2(1, -55)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mh3hn"]
+_data = {
+"RESET": SubResource("Animation_dyad5"),
+"default": SubResource("Animation_51dyt"),
+"hide": SubResource("Animation_xeral"),
+"show": SubResource("Animation_iw3rb")
+}
+
+[node name="DialogInteraction" type="Area2D"]
+process_mode = 3
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_lsoij")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cn1ma")
+debug_color = Color(1.92523e-06, 0.871472, 0.635055, 0.0941176)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -52)
+texture = ExtResource("1_dbdrv")
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+process_mode = 3
+libraries = {
+"": SubResource("AnimationLibrary_mh3hn")
+}
+autoplay = "default"
