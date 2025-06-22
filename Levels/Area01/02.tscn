@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://bne7yf2n77d0n"]
+[gd_scene load_steps=17 format=4 uid="uid://bne7yf2n77d0n"]
 
 [ext_resource type="Script" path="res://Levels/Scripts/Level.cs" id="1_ku76w"]
 [ext_resource type="PackedScene" uid="uid://cm83mofktrboo" path="res://TileMaps/grass-01.tscn" id="2_kb8pi"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://b1shwqdolethw" path="res://NPC/NPCPatrolBehavior.tscn" id="10_u0tpn"]
 [ext_resource type="PackedScene" uid="uid://dxuka5lwxtw7k" path="res://NPC/PatrolLocation.tscn" id="11_ryh0q"]
 [ext_resource type="Resource" uid="uid://b0vori82xhjll" path="res://NPC/00_NPCs/NPC01.tres" id="11_y83mr"]
+[ext_resource type="Script" path="res://Interactables/Dialog/Scripts/DialogChoice.cs" id="15_vio7x"]
+[ext_resource type="Script" path="res://Interactables/Dialog/Scripts/DialogBranch.cs" id="16_b6qb0"]
 
 [node name="02" type="Node2D"]
 y_sort_enabled = true
@@ -89,15 +91,27 @@ WaitTime = 2.0
 
 [node name="DialogText" type="Node" parent="NPC2/DialogInteraction2"]
 script = ExtResource("10_0swxx")
-Text = "Hi! How's Hero?"
+Text = "Yo! Hero! Will you help retreive my magical flute from the dark dungeon?"
 
-[node name="DialogText2" type="Node" parent="NPC2/DialogInteraction2"]
-script = ExtResource("10_0swxx")
-Text = "
-[wave]Heck yeah, it's me.[/wave]"
-NpcInfo = ExtResource("7_i63jx")
+[node name="DialogChoice" type="Node" parent="NPC2/DialogInteraction2"]
+script = ExtResource("15_vio7x")
 
-[node name="DialogText3" type="Node" parent="NPC2/DialogInteraction2"]
+[node name="DialogBranch" type="Node" parent="NPC2/DialogInteraction2/DialogChoice"]
+script = ExtResource("16_b6qb0")
+Text = "Count on it!"
+
+[node name="DialogText" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch"]
 script = ExtResource("10_0swxx")
-Text = "Nice bro!
-Happy to have a hero."
+Text = "[wave]Thank you! Hero! You are a true specimen![/wave]"
+
+[node name="DialogText2" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch"]
+script = ExtResource("10_0swxx")
+Text = "Oh, and be careful of the [b]evil wizard[/b] who lurks in the dungeon!"
+
+[node name="DialogBranch2" type="Node" parent="NPC2/DialogInteraction2/DialogChoice"]
+script = ExtResource("16_b6qb0")
+Text = "NO!"
+
+[node name="DialogText" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch2"]
+script = ExtResource("10_0swxx")
+Text = "[b]Geez![/b] Some lousy hero you are..."

@@ -26,6 +26,8 @@ public partial class DialogSystemNode : CanvasLayer
 	private int textLength = 0;
 	private string plainText;
 
+	private bool waitingForChoice = false;
+
 	private Control dialogUI;
 	private RichTextLabel content;
 	private Label nameLabel;
@@ -34,6 +36,7 @@ public partial class DialogSystemNode : CanvasLayer
 	private Label dialogProgressIndicatorLabel;
 	private Timer timer;
 	private AudioStreamPlayer audioStreamPlayer;
+	private VBoxContainer choiceOptions;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -47,6 +50,7 @@ public partial class DialogSystemNode : CanvasLayer
         dialogProgressIndicatorLabel = GetNode<Label>("DialogUI/DialogProgressIndicator/Label");
         timer = GetNode<Timer>("DialogUI/Timer");
         audioStreamPlayer = GetNode<AudioStreamPlayer>("DialogUI/AudioStreamPlayer");
+        choiceOptions = GetNode<VBoxContainer>("DialogUI/VBoxContainer");
 
         if (Engine.IsEditorHint())
 		{
@@ -70,7 +74,7 @@ public partial class DialogSystemNode : CanvasLayer
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (isActive == false || (PauseMenu.Instance?.isPaused ?? false))
+        if (isActive == false)
 		{
 			return;
 		}
@@ -84,6 +88,10 @@ public partial class DialogSystemNode : CanvasLayer
 				textInProgress = false;
 				ShowDialogButtonIndicator(true);
                 return;
+			}
+			else if (waitingForChoice)
+			{
+				return;
 			}
 
 			dialogIndex += 1;
@@ -115,6 +123,7 @@ public partial class DialogSystemNode : CanvasLayer
     public void HideDialog() 
 	{
 		isActive = false;
+		choiceOptions.Visible = false;
         dialogUI.Visible = false;
         dialogUI.ProcessMode = Node.ProcessModeEnum.Disabled;
 		EmitSignal(SignalName.Finished);
@@ -124,18 +133,63 @@ public partial class DialogSystemNode : CanvasLayer
 
 	public void StartDialog()
 	{
+		waitingForChoice = false;
 		ShowDialogButtonIndicator(false);
 		var dialogItem = dialogItems[dialogIndex];
-		SetDialogData(dialogItem);
 
-		content.VisibleCharacters = 0;
-		textLength = content.GetTotalCharacterCount();
-		plainText = content.GetParsedText();
-		textInProgress = true;
-		StartTimer();
+		if (dialogItem is DialogText dt)
+		{
+			SetDialogText(dt);
+		}
+		else if (dialogItem is DialogChoice dc)
+		{
+            SetDialogChoice(dc);
+        }
 	}
 
-	public void OnTimerTimeout()
+    public void SetDialogText(DialogText dt)
+    {
+        content.Text = dt.Text;
+        portraitSprite.Texture = dt.NpcInfo.Portrait;
+        portraitSprite.audioPitchBase = dt.NpcInfo.DialogAudioPitch;
+        nameLabel.Text = dt.NpcInfo.NPCName;
+        content.VisibleCharacters = 0;
+        textLength = content.GetTotalCharacterCount();
+        plainText = content.GetParsedText();
+        textInProgress = true;
+        StartTimer();
+    }
+
+	public async void SetDialogChoice(DialogChoice dc)
+	{
+		choiceOptions.Visible = true;
+		waitingForChoice = true;
+		foreach (var c in choiceOptions.GetChildren())
+		{
+			c.QueueFree();
+		}
+
+		foreach (var db in dc.DialogBranches)
+		{
+			var newChoice = new Button();
+			newChoice.Text = db.Text;
+			newChoice.Alignment = HorizontalAlignment.Left;
+			newChoice.Pressed += () => { DialogChoiceSelected(db); };
+			choiceOptions.AddChild(newChoice);
+		}
+
+		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+		choiceOptions.GetChild<Button>(0).GrabFocus();
+    }
+
+	public void DialogChoiceSelected(DialogBranch db)
+	{
+		choiceOptions.Visible = false;
+		waitingForChoice = false;
+		ShowDialog(db.DialogItems);
+	}
+
+    public void OnTimerTimeout()
 	{
 		content.VisibleCharacters += 1;
 		if (content.VisibleCharacters > textLength)
@@ -148,18 +202,6 @@ public partial class DialogSystemNode : CanvasLayer
 		EmitSignal(SignalName.LetterAdded, plainText[content.VisibleCharacters - 1].ToString());
 		StartTimer();
 	}
-
-	public void SetDialogData(DialogItem dialogItem)
-	{
-        if (dialogItem is DialogText dt)
-        {
-            content.Text = dt.Text;
-        }
-
-		portraitSprite.Texture = dialogItem.NpcInfo.Portrait;
-		portraitSprite.audioPitchBase = dialogItem.NpcInfo.DialogAudioPitch;
-		nameLabel.Text = dialogItem.NpcInfo.NPCName;
-    }
 
 	public void ShowDialogButtonIndicator(bool isVisible)
 	{

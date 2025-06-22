@@ -38,6 +38,11 @@ public partial class PauseMenu : CanvasLayer
         {
             if (isPaused == false)
             {
+                if (DialogSystemNode.Instance.isActive)
+                {
+                    return;
+                }
+
                 ShowPauseMenu();
             }
             else
@@ -62,11 +67,7 @@ public partial class PauseMenu : CanvasLayer
 
     private void HidePauseMenu()
     {
-        if (!DialogSystemNode.Instance?.isActive ?? true)
-        {
-            GetTree().Paused = false;
-        }
-        
+        GetTree().Paused = false;
         Visible = false;
         isPaused = false;
         EmitSignal(SignalName.Hidden);
