@@ -14,6 +14,6 @@ public partial class NPCResource : Resource
     [Export]
     public Texture2D Portrait;
 
-    [Export]
+    [Export(PropertyHint.Range, "0.5, 1.8, 0.02")]
     public float DialogAudioPitch = 1.0f;
 }

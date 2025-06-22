@@ -14,7 +14,10 @@ public partial class DialogSystemNode : CanvasLayer
 
 	public static DialogSystemNode Instance;
 
-    private bool isActive = false;
+	private string longChars = ".!?:;";
+	private string halfLongChars = ", ";
+
+    public bool isActive = false;
 	private Array<DialogItem> dialogItems;
 	private int dialogIndex = 0;
 
@@ -67,7 +70,7 @@ public partial class DialogSystemNode : CanvasLayer
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (isActive == false)
+        if (isActive == false || (PauseMenu.Instance?.isPaused ?? false))
 		{
 			return;
 		}
@@ -175,6 +178,19 @@ public partial class DialogSystemNode : CanvasLayer
 	{
 		timer.WaitTime = textSpeed;
 		// manipulate wait time
+		if (content.VisibleCharacters > 0)
+		{
+			var c = plainText[content.VisibleCharacters - 1];
+			if (longChars.Contains(c))
+			{
+				timer.WaitTime *= 4;
+			}
+			else if (halfLongChars.Contains(c))
+			{
+				timer.WaitTime *= 2;
+			}
+		}
+
 		timer.Start();
     }
 }

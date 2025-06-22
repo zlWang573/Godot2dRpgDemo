@@ -98,6 +98,8 @@ public partial class DialogProtrait : Sprite2D
         }
         else if (closeChars.Contains(letter))
         {
+            audioStreamPlayer.PitchScale = audioPitchBase - 0.1f;
+            audioStreamPlayer.Play();
             mouthOpenFrames = 0;
         }
 
@@ -108,7 +110,12 @@ public partial class DialogProtrait : Sprite2D
 
         if (mouthOpenFrames <= 0)
         {
-            OpenMouth = false;
+            if (openMouth == true)
+            {
+                audioStreamPlayer.PitchScale = (float)GD.RandRange(audioPitchBase - 0.1f, audioPitchBase);
+                audioStreamPlayer.Play();
+                OpenMouth = false;
+            }
         }
     }
 }

@@ -14,8 +14,16 @@ public partial class NPCPatrolBehavior : NPCBehavior
     public int CurrentLocationIndex = 0;
     public PatrolLocation Target;
 
+    private bool hasStarted = false;
+    private Vector2 direction;
+    private string lastPhase = string.Empty;
+
+    private Timer timer;
+
     public override void _Ready()
     {
+        timer = GetNode<Timer>("Timer");
+
         GatherPatrolLocations();
         if (Engine.IsEditorHint())
         {
@@ -41,7 +49,7 @@ public partial class NPCPatrolBehavior : NPCBehavior
 
         if (GlobalPosition.DistanceTo(Target.TargetPosition) < 1f)
         {
-            Start();
+            IdlePhase();
         }
     }
 
@@ -85,11 +93,27 @@ public partial class NPCPatrolBehavior : NPCBehavior
 
     public async override void Start()
     {
-        if (NPC.DoBehavior == false && PatrolLocations.Count <= 1)
+        if (NPC.DoBehavior == false || PatrolLocations.Count <= 1)
         {
             return;
         }
 
+        if (hasStarted)
+        {
+            if (timer.TimeLeft <= 0f)
+            {
+                WalkPhase();
+            }
+
+            return;
+        }
+
+        hasStarted = true;
+        IdlePhase();
+    }
+
+    private async void IdlePhase()
+    {
         this.NPC.GlobalPosition = Target.TargetPosition;
 
         this.NPC.State = "idle";
@@ -106,18 +130,26 @@ public partial class NPCPatrolBehavior : NPCBehavior
 
         Target = PatrolLocations[CurrentLocationIndex];
 
-        var timer = GetTree().CreateTimer(waitTime);
-        await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
+        if (waitTime > 0f)
+        {
+            timer.Start(waitTime);
+            await ToSignal(timer, Timer.SignalName.Timeout);
+        }
 
-        if (this.NPC.DoBehavior == false && PatrolLocations.Count <= 1)
+        if (this.NPC.DoBehavior == false || PatrolLocations.Count <= 1)
         {
             return;
         }
 
+        WalkPhase();
+    }
+
+    private void WalkPhase()
+    {
         this.NPC.State = "walk";
-        var dir = GlobalPosition.DirectionTo(Target.TargetPosition);
-        this.NPC.Direction = dir;
-        this.NPC.Velocity = WalkSpeed * dir;
+        direction = GlobalPosition.DirectionTo(Target.TargetPosition);
+        this.NPC.Direction = direction;
+        this.NPC.Velocity = WalkSpeed * direction;
         this.NPC.UpdateDirection(Target.TargetPosition);
         this.NPC.UpdateAnimation();
     }

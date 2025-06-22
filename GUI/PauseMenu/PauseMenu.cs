@@ -7,7 +7,7 @@ public partial class PauseMenu : CanvasLayer
     public Label ItemDescription;
     public AudioStreamPlayer2D AudioStreamPlayer2D;
 
-	private bool isPaused = false;
+	public bool isPaused = false;
 
     [Signal]
     public delegate void ShownEventHandler();
@@ -62,7 +62,11 @@ public partial class PauseMenu : CanvasLayer
 
     private void HidePauseMenu()
     {
-        GetTree().Paused = false;
+        if (!DialogSystemNode.Instance?.isActive ?? true)
+        {
+            GetTree().Paused = false;
+        }
+        
         Visible = false;
         isPaused = false;
         EmitSignal(SignalName.Hidden);

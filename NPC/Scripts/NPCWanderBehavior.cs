@@ -78,6 +78,11 @@ public partial class NPCWanderBehavior : NPCBehavior
         var timer = GetTree().CreateTimer(GD.Randf() * IdleDuration + IdleDuration);
         await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
 
+        if (NPC.DoBehavior == false)
+        {
+            return;
+        }
+
         this.NPC.State = "walk";
         var dir = DIRECTIONS[GD.RandRange(0, 3)];
         this.NPC.Direction = dir;

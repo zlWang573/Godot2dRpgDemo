@@ -72,7 +72,7 @@ WaitTime = 0.0
 
 [node name="PatrolLocation3" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
 modulate = Color(1, 1, 0, 1)
-position = Vector2(57, -25)
+position = Vector2(55, -36)
 WaitTime = 2.0
 
 [node name="PatrolLocation" parent="NPC2/NpcPatrolBehavior" instance=ExtResource("11_ryh0q")]
@@ -89,7 +89,7 @@ WaitTime = 2.0
 
 [node name="DialogText" type="Node" parent="NPC2/DialogInteraction2"]
 script = ExtResource("10_0swxx")
-Text = "Hi [b]Hero[/b], is that you?"
+Text = "Hi! How's Hero?"
 
 [node name="DialogText2" type="Node" parent="NPC2/DialogInteraction2"]
 script = ExtResource("10_0swxx")
