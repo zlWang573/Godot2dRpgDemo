@@ -127,6 +127,7 @@ text = "Example [b]text[/b]!!!
 [wave]wave text [/wave]
 [shake][color=orangered]shaking[/color] [/shake]"
 scroll_active = false
+visible_characters_behavior = 1
 
 [node name="NameLabel" type="Label" parent="DialogUI"]
 layout_mode = 0

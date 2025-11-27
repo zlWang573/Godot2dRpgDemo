@@ -12,11 +12,7 @@ public partial class DialogChoice : DialogItem
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        if (Engine.IsEditorHint())
-        {
-            return;
-        }
-
+        base._Ready();
         foreach (var c in GetChildren())
         {
             if (c is DialogBranch d)
@@ -34,6 +30,29 @@ public partial class DialogChoice : DialogItem
         }
 
         return new string[0];
+    }
+
+    protected override void SetEditorDisplay()
+    {
+        SetRelatedText();
+        if (DialogBranches.Count > 0)
+        {
+            ExampleDialog.SetDialogChoice(this);
+        }
+    }
+
+    private void SetRelatedText()
+    {
+        var p = GetParent();
+        if (p != null)
+        {
+            var t = p.GetChild(GetIndex() - 1);
+            if (t != null && t is DialogText dt)
+            {
+                ExampleDialog.SetDialogText(dt);
+                ExampleDialog.SetTextVisibleCharacters(-1);
+            }
+        }
     }
 
     private bool CheckForDialogBranches()

@@ -49,6 +49,7 @@ NPCResource = ExtResource("11_y83mr")
 [node name="DialogText" type="Node" parent="NPC/DialogInteraction"]
 script = ExtResource("10_0swxx")
 Text = "Hi [b]Hero[/b], is that you?"
+NpcInfo = ExtResource("11_y83mr")
 
 [node name="DialogText2" type="Node" parent="NPC/DialogInteraction"]
 script = ExtResource("10_0swxx")
@@ -60,6 +61,7 @@ NpcInfo = ExtResource("7_i63jx")
 script = ExtResource("10_0swxx")
 Text = "Nice bro!
 Happy to have a hero."
+NpcInfo = ExtResource("11_y83mr")
 
 [node name="NPC2" parent="." instance=ExtResource("6_ka058")]
 position = Vector2(344, 158)
@@ -92,26 +94,33 @@ WaitTime = 2.0
 [node name="DialogText" type="Node" parent="NPC2/DialogInteraction2"]
 script = ExtResource("10_0swxx")
 Text = "Yo! Hero! Will you help retreive my magical flute from the dark dungeon?"
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogChoice" type="Node" parent="NPC2/DialogInteraction2"]
 script = ExtResource("15_vio7x")
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogBranch" type="Node" parent="NPC2/DialogInteraction2/DialogChoice"]
 script = ExtResource("16_b6qb0")
-Text = "Count on it!"
+Text = "You can count on it!"
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogText" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch"]
 script = ExtResource("10_0swxx")
 Text = "[wave]Thank you! Hero! You are a true specimen![/wave]"
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogText2" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch"]
 script = ExtResource("10_0swxx")
 Text = "Oh, and be careful of the [b]evil wizard[/b] who lurks in the dungeon!"
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogBranch2" type="Node" parent="NPC2/DialogInteraction2/DialogChoice"]
 script = ExtResource("16_b6qb0")
 Text = "NO!"
+NpcInfo = ExtResource("9_acy02")
 
 [node name="DialogText" type="Node" parent="NPC2/DialogInteraction2/DialogChoice/DialogBranch2"]
 script = ExtResource("10_0swxx")
 Text = "[b]Geez![/b] Some lousy hero you are..."
+NpcInfo = ExtResource("9_acy02")

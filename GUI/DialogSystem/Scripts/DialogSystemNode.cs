@@ -149,6 +149,7 @@ public partial class DialogSystemNode : CanvasLayer
 
     public void SetDialogText(DialogText dt)
     {
+		choiceOptions.Visible = false;
         content.Text = dt.Text;
         portraitSprite.Texture = dt.NpcInfo.Portrait;
         portraitSprite.audioPitchBase = dt.NpcInfo.DialogAudioPitch;
@@ -160,7 +161,12 @@ public partial class DialogSystemNode : CanvasLayer
         StartTimer();
     }
 
-	public async void SetDialogChoice(DialogChoice dc)
+	public void SetTextVisibleCharacters(int value)
+	{
+		content.VisibleCharacters = value;
+	}
+
+    public async void SetDialogChoice(DialogChoice dc)
 	{
 		choiceOptions.Visible = true;
 		waitingForChoice = true;
@@ -179,7 +185,10 @@ public partial class DialogSystemNode : CanvasLayer
 		}
 
 		await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-		choiceOptions.GetChild<Button>(0).GrabFocus();
+		if (!Engine.IsEditorHint())
+		{
+            choiceOptions.GetChild<Button>(0).GrabFocus();
+        }
     }
 
 	public void DialogChoiceSelected(DialogBranch db)
