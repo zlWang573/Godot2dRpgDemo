@@ -68,7 +68,7 @@ public partial class DialogItem : Node
 		{
 			//GD.Print("queue");
 			RemoveChild(ExampleDialog);
-			ExampleDialog.QueueFree();
+			//ExampleDialog.QueueFree();
 			ExampleDialog = null;
         }
 

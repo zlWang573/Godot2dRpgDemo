@@ -137,7 +137,7 @@ public partial class Player : CharacterBody2D
 	public void UpdateHp(int delta)
 	{
 		Hp = Math.Clamp(Hp + delta, 0, MaxHp);
-        PlayerHUD.UpdateHp(Hp, MaxHp);
+        PlayerHUD.Instance.UpdateHp(Hp, MaxHp);
 	}
 
 	public async void MakeInvulnerable(float duration = 1f)

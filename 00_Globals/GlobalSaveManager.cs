@@ -45,9 +45,14 @@ public partial class GlobalSaveManager : Node
 		EmitSignal(SignalName.GameSaved);
 	}
 
+    public FileAccess GetSaveFile()
+    {
+        return FileAccess.Open(SAVE_PATH + "save.save", ModeFlags.Read);
+    }
+
 	public async void LoadGame()
 	{
-        var file = FileAccess.Open(SAVE_PATH + "save.save", ModeFlags.Read);
+        var file = GetSaveFile();
         var json = file.GetLine();
         CurrentSave = (Dictionary<string, Variant>)Json.ParseString(json);
         var playerData = (Dictionary<string, Variant>)CurrentSave["player"];

@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="demo"
-run/main_scene="res://Levels/Area01/01.tscn"
+run/main_scene="res://TitleScene/TitleScene.tscn"
 config/features=PackedStringArray("4.3", "C#", "Mobile")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
